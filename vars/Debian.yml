@@ -1,0 +1,13 @@
+---
+compiler_packages:
+  - build-essential
+  - git
+  - libflatbuffers-dev
+  - liblmdb-dev
+  - libregexp-grammars-perl
+  - libsecp256k1-dev
+  - libssl-dev
+  - libtemplate-perl
+  - libyaml-perl
+  - libzstd-dev
+  - zlib1g-dev

@@ -1,0 +1,22 @@
+[Unit]
+Description=strfry nostr relay
+
+[Service]
+User={{ strfry_system_user }}
+Group={{ strfry_system_group }}
+WorkingDirectory={{ strfry_data_path }}
+ExecStart={{ strfry_binary_path }} --config=strfry.conf relay
+Restart=on-failure
+RestartSec=15
+LimitNOFILE=65536
+
+# Hardening
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=full
+
+[Journal]
+MaxRetentionSec=2h
+
+[Install]
+WantedBy=multi-user.target

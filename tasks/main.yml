@@ -1,0 +1,24 @@
+---
+- name: Load a variable file based on the OS type.
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_facts.distribution_major_version }}.yml"
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+- name: Install compiler dependencies (Debian)
+  ansible.builtin.package:
+    name: "{{ compiler_packages }}"
+    state: present
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Set up strfry user
+  import_tasks: setup-user.yml
+
+#- name: Run build tasks
+#  import_tasks: build.yml
+#  tags: build
+
+- name: Install strfry
+  import_tasks: install.yml

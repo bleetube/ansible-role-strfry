@@ -1,0 +1,51 @@
+---
+- name: Install strfry binary
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/src/strfry/strfry"
+    dest: "{{ strfry_binary_path }}"
+    mode: 0755
+    remote_src: true
+  become: true
+
+- name: Setup strfry service unit
+  ansible.builtin.template:
+    src: strfry.service
+    dest: /etc/systemd/system/strfry.service
+  become: true
+  notify: restart strfry
+
+- name: Ensure strfry is enabled on boot
+  ansible.builtin.service:
+    name: strfry
+    enabled: true
+    state: started
+  become: true
+
+- name: Configure strfry
+  ansible.builtin.template:
+    src: strfry.conf
+    dest: "{{ strfry_data_path }}/strfry.conf"
+    owner: "{{ strfry_system_user }}"
+    group: "{{ strfry_system_group }}"
+  when: not strfry_skip_config
+  become: true
+  tags: config
+  notify: restart strfry
+
+- name: Ensure the configured database directory exists.
+  ansible.builtin.file:
+    path: "{{ strfry_db }}"
+    state: directory
+    owner: "{{ strfry_system_user }}"
+    group: "{{ strfry_system_group }}"
+  when: strfry_db.startswith('/')
+  become: true
+
+- name: Ensure the configured database directory exists.
+  ansible.builtin.file:
+    path: "{{ strfry_data_path }}/{{ strfry_db }}"
+    state: directory
+    owner: "{{ strfry_system_user }}"
+    group: "{{ strfry_system_group }}"
+  when: not strfry_db.startswith('/')
+  become: true

@@ -1,0 +1,31 @@
+---
+- name: Avoid running as root
+  ansible.builtin.pause:
+    prompt: "Please run this role as a regular user with sudo/doas privileges. Or press enter to continue anyway (not recommended)."
+  when: ansible_user_id == 'root'
+
+- name: Clone git repository
+  ansible.builtin.git:
+    repo: https://github.com/hoytech/strfry.git
+    dest: "{{ ansible_env.HOME }}/src/strfry"
+    version: "{{ strfry_version }}"
+    force: yes # required to avoid weird error when updating submodules via Ansible
+  register: git_repository
+
+- name: Update git submodule (golpe)
+  ansible.builtin.command:
+    cmd: git submodule update --init
+    chdir: "{{ ansible_env.HOME }}/src/strfry"
+  when: git_repository.changed
+
+- name: Run make setup-golpe
+  ansible.builtin.command:
+    cmd: make setup-golpe
+    chdir: "{{ ansible_env.HOME }}/src/strfry"
+  when: git_repository.changed
+
+- name: Build strfry
+  ansible.builtin.command:
+    cmd: "make -j{{ strfry_make_jobs|default(1) }}"
+    chdir: "{{ ansible_env.HOME }}/src/strfry"
+  when: git_repository.changed

@@ -1,0 +1,9 @@
+---
+compiler_packages:
+  - @development-tools
+  - git
+  - lmdb-devel
+  - openssl-devel
+  - perl-Template-Toolkit
+  - perl-YAML
+  - zlib-devel
