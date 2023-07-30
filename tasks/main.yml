@@ -6,19 +6,18 @@
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
 
-- name: Install compiler dependencies (Debian)
+- name: Install build dependencies
   ansible.builtin.package:
-    name: "{{ compiler_packages }}"
+    name: "{{ strfry_build_dependencies }}"
     state: present
-  when: ansible_os_family == 'Debian'
   become: true
 
-- name: Set up strfry user
+- name: Set up local user account
   import_tasks: setup-user.yml
 
-#- name: Run build tasks
-#  import_tasks: build.yml
-#  tags: build
+- name: Run build tasks
+  import_tasks: build.yml
+  tags: build
 
-- name: Install strfry
+- name: Proceeding with installation
   import_tasks: install.yml

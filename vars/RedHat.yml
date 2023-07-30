@@ -1,9 +1,11 @@
 ---
-compiler_packages:
+strfry_build_dependencies:
   - @development-tools
+# - flatbuffers # epel?
   - git
   - lmdb-devel
   - openssl-devel
   - perl-Template-Toolkit
   - perl-YAML
   - zlib-devel
+  - libb2

@@ -16,16 +16,16 @@
   ansible.builtin.command:
     cmd: git submodule update --init
     chdir: "{{ ansible_env.HOME }}/src/strfry"
-  when: git_repository.changed
+ #when: git_repository.changed
 
 - name: Run make setup-golpe
   ansible.builtin.command:
     cmd: make setup-golpe
     chdir: "{{ ansible_env.HOME }}/src/strfry"
-  when: git_repository.changed
+ #when: git_repository.changed
 
 - name: Build strfry
   ansible.builtin.command:
     cmd: "make -j{{ strfry_make_jobs|default(1) }}"
     chdir: "{{ ansible_env.HOME }}/src/strfry"
-  when: git_repository.changed
+ #when: git_repository.changed

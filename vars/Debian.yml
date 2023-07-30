@@ -1,5 +1,5 @@
 ---
-compiler_packages:
+strfry_build_dependencies:
   - build-essential
   - git
   - libflatbuffers-dev
@@ -11,3 +11,4 @@ compiler_packages:
   - libyaml-perl
   - libzstd-dev
   - zlib1g-dev
+  - libb2-dev

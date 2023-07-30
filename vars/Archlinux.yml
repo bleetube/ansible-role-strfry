@@ -1,11 +1,11 @@
 ---
-compiler_packages:
+strfry_build_dependencies:
   - base-devel
   - flatbuffers
   - git
   - lmdb
   - openssl
-  - perl-regexp-grammars
   - perl-template-toolkit
   - perl-yaml
   - zlib
+  - libb2
