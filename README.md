@@ -53,3 +53,11 @@ Logs
 systemctl status strfry
 journalctl -fu strfry
 ```
+
+## Resources
+
+Plugins:
+
+* [strfry policies](https://gitlab.com/soapbox-pub/strfry-policies) plugin (deno) - recommended
+* [strfry metrics](https://github.com/bleetube/strfry-plugin) (python)
+* [spamblaster](https://github.com/relaytools/spamblaster) (go)
