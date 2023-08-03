@@ -2,6 +2,11 @@
 
 This Ansible Role builds and installs [strfry](https://github.com/hoytech/strfry). It is intended to be composed with a separate role to handle the web proxy configuration.
 
+Tested on:
+* Archlinux
+* Debian 11
+* Ubuntu 22.04
+
 ## Requirements
 
 None.

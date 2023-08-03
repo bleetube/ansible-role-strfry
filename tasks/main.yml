@@ -6,6 +6,13 @@
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
 
+- name: Install Deno
+  ansible.builtin.include_tasks:
+    file: deno.yml
+    apply:
+      tags: deno
+      become: true
+        
 - name: Install build dependencies
   ansible.builtin.package:
     name: "{{ strfry_build_dependencies }}"
