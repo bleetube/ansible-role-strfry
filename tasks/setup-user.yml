@@ -8,7 +8,6 @@
       - /usr/sbin
     patterns: nologin
   register: nologin_bin
-  become: true
 
 - name: Create the strfry group
   ansible.builtin.group:
@@ -16,7 +15,6 @@
     state: present
     system: true
   when: strfry_system_group != "root"
-  become: true
 
 - name: Create the strfry system user
   ansible.builtin.user:
@@ -27,7 +25,6 @@
     create_home: false
     home: "{{ strfry_data_path }}"
   when: strfry_system_user != "root"
-  become: true
 
 - name: Ensure strfry_path exists.
   ansible.builtin.file:
@@ -36,4 +33,3 @@
     group: "{{ strfry_system_group }}"
     state: directory
     mode: '0750'
-  become: true

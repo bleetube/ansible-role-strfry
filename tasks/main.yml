@@ -6,12 +6,18 @@
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
 
+- name: Set up local user account
+  include_tasks:
+    file: setup-user.yml
+    apply:
+      become: true
+
 - name: Install Deno
-  ansible.builtin.include_tasks:
+  include_tasks:
     file: deno.yml
     apply:
-      tags: deno
       become: true
+  when: strfry_policies_enabled
         
 - name: Install build dependencies
   ansible.builtin.package:
@@ -19,12 +25,11 @@
     state: present
   become: true
 
-- name: Set up local user account
-  import_tasks: setup-user.yml
-
-- name: Run build tasks
-  import_tasks: build.yml
-  tags: build
+- name: Run build tasks as the ansible user (must not be root)
+  include_tasks: build.yml
 
 - name: Proceeding with installation
-  import_tasks: install.yml
+  include_tasks:
+    file: install.yml
+    apply:
+      become: true

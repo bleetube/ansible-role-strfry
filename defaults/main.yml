@@ -9,6 +9,9 @@ strfry_system_user: strfry
 strfry_data_path: /var/lib/strfry
 strfry_db: "./strfry-db/" # Becomes /var/lib/strfry/strfry-db
 
+strfry_policies_enabled: true
+strfry_policies_path:  "{{ strfry_data_path }}/strfry-policy.ts"
+
 strfry_dbParams:
   # Maximum number of threads/processes that can simultaneously have LMDB transactions open (restart required)
   maxreaders: 256

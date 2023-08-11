@@ -29,6 +29,7 @@
     remote_src: true
     extra_opts:
       - -j
+  when: install_deno
 
 - name: 'Save meta information about the version of {{ app_name }} that was installed'
   community.general.ini_file:
@@ -39,3 +40,4 @@
     value: "{{ deno_latest_release_tag.json.tag_name | replace('v','') }}"
     backup: true
     no_extra_spaces: true
+  when: install_deno

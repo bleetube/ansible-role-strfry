@@ -1,6 +1,6 @@
 # Ansible Role: strfry
 
-This Ansible Role builds and installs [strfry](https://github.com/hoytech/strfry). It is intended to be composed with a separate role to handle the web proxy configuration.
+This Ansible Role builds and installs [strfry](https://github.com/hoytech/strfry), and also sets up [strfry-policies](https://gitlab.com/soapbox-pub/strfry-policies). It is intended to be composed with a separate role to handle the web proxy configuration.
 
 Tested on:
 * Archlinux
@@ -17,6 +17,7 @@ None.
 strfry_version: beta # git repository branch or release tag
 strfry_make_jobs: "{{ ansible_processor_cores }}" # number of CPUs to build with
 strfry_skip_config: no
+strfry_policies_enabled: yes
 ```
 
 See the role [defaults](defaults/main.yml).
