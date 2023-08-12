@@ -28,14 +28,15 @@
   tags: config
   notify: restart strfry
 
-- name: Configure basic strfry-policies only if a configuration does not already exist
-  ansible.builtin.template:
+- name: Install the strfry-policy template
+  ansible.builtin.copy:
     src: strfry-policy.ts
-    dest: "{{ strfry_policies_path }}"
+    dest: "{{ strfry_relay.writePolicy.plugin }}"
     owner: "{{ strfry_system_user }}"
     group: "{{ strfry_system_group }}"
-  when: not strfry_skip_config
-  tags: config
+#   force: false # Never overwrite, this is just a starter policy
+    mode: '0755'
+  when: strfry_policies_enabled
   notify: restart strfry
 
 - name: Ensure the configured database directory exists.

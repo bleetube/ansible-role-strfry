@@ -10,7 +10,6 @@ strfry_data_path: /var/lib/strfry
 strfry_db: "./strfry-db/" # Becomes /var/lib/strfry/strfry-db
 
 strfry_policies_enabled: true
-strfry_policies_path:  "{{ strfry_data_path }}/strfry-policy.ts"
 
 strfry_dbParams:
   # Maximum number of threads/processes that can simultaneously have LMDB transactions open (restart required)
@@ -65,30 +64,30 @@ strfry_relay:
 
   writePolicy:
     # If non-empty, path to an executable script that implements the writePolicy plugin logic
-    plugin: ""
+    plugin: "{{ strfry_data_path }}/strfry-policy.ts"
 
     # Number of seconds to search backwards for lookback events when starting the writePolicy plugin (0 for no lookback)
     lookbackSeconds: 0
 
   compression:
     # Use permessage-deflate compression if supported by client. Reduces bandwidth, but slight increase in CPU (restart required)
-    enabled: "true"
+    enabled: yes
 
     # Maintain a sliding window buffer for each connection. Improves compression, but uses more memory (restart required)
-    slidingWindow: "true"
+    slidingWindow: yes
 
   logging:
     # Dump all incoming messages
-    dumpInAll: "false"
+    dumpInAll: no
 
     # Dump all incoming EVENT messages
-    dumpInEvents: "false"
+    dumpInEvents: no
 
     # Dump all incoming REQ/CLOSE messages
-    dumpInReqs: "false"
+    dumpInReqs: no
 
     # Log performance metrics for initial REQ database scans
-    dbScanPerf: "false"
+    dbScanPerf: no
 
   numThreads:
     # Ingester threads: route incoming requests, validate events/sigs (restart required)

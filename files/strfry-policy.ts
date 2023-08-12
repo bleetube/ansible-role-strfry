@@ -1,5 +1,5 @@
 #!/bin/sh
-//bin/true; exec deno run "$0" "$@"
+//bin/true; exec deno run -A "$0" "$@"
 import {
     antiDuplicationPolicy,
     hellthreadPolicy,
@@ -11,7 +11,7 @@ import {
   
   for await (const msg of readStdin()) {
     const result = await pipeline(msg, [
-      [hellthreadPolicy, { limit: 100 }],
+      [hellthreadPolicy, { limit: 10 }],
       [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
       [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
     ]);
