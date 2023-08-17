@@ -34,12 +34,13 @@ For more configuration info, see the relevant upstream [configuration example](h
 
 ```yaml
 - hosts: strfry
-  become: yes
   roles:
     - role: bleetube.strfry
     - role: nginxinc.nginx_core.nginx
+      become: yes
   tasks:
     - import_tasks: nginx_conf.yml
+      become: yes
 ```
 
 A sample [nginx configuration](docs/examples/nginx_conf.yml) is provided.
