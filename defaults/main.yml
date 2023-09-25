@@ -18,6 +18,31 @@ strfry_dbParams:
   # Size of mmap() to use when loading LMDB (default is 10TB, does *not* correspond to disk-space used) (restart required)
   mapsize: 10995116277760
 
+  # Disables read-ahead when accessing the LMDB mapping. Reduces IO activity when DB size is larger than RAM. (restart required)
+  noReadAhead: no
+
+strfry_events:
+  # Maximum size of normalised JSON, in bytes
+  maxEventSize: 65536
+
+  # Events newer than this will be rejected
+  rejectEventsNewerThanSeconds: 900
+
+  # Events older than this will be rejected
+  rejectEventsOlderThanSeconds: 94608000
+
+  # Ephemeral events older than this will be rejected
+  rejectEphemeralEventsOlderThanSeconds: 60
+
+  # Ephemeral events will be deleted from the DB when older than this
+  ephemeralEventsLifetimeSeconds: 300
+
+  # Maximum number of tags allowed
+  maxNumTags: 2000
+
+  # Maximum size for tag values, in bytes
+  maxTagValSize: 1024
+
 strfry_relay:
   # Interface to listen on. Use 0.0.0.0 to listen on all interfaces (restart required)
   bind: "127.0.0.1"
@@ -66,9 +91,6 @@ strfry_relay:
     # If non-empty, path to an executable script that implements the writePolicy plugin logic
     plugin: "{{ strfry_data_path }}/strfry-policy.ts"
 
-    # Number of seconds to search backwards for lookback events when starting the writePolicy plugin (0 for no lookback)
-    lookbackSeconds: 0
-
   compression:
     # Use permessage-deflate compression if supported by client. Reduces bandwidth, but slight increase in CPU (restart required)
     enabled: yes
@@ -89,6 +111,9 @@ strfry_relay:
     # Log performance metrics for initial REQ database scans
     dbScanPerf: no
 
+    # Log reason for invalid event rejection? Can be disabled to silence excessive logging
+    invalidEvents: yes
+
   numThreads:
     # Ingester threads: route incoming requests, validate events/sigs (restart required)
     ingester: 3
@@ -99,27 +124,12 @@ strfry_relay:
     # reqMonitor threads: Handle filtering of new events (restart required)
     reqMonitor: 3
 
-    # yesstr threads: Experimental yesstr protocol (restart required)
-    yesstr: 1
+    # negentropy threads: Handle negentropy protocol messages (restart required)
+    negentropy: 2
 
-strfry_events:
-  # Maximum size of normalised JSON, in bytes
-  maxEventSize: 65536
+  negentropy:
+    # Support negentropy protocol messages
+    enabled: yes
 
-  # Events newer than this will be rejected
-  rejectEventsNewerThanSeconds: 900
-
-  # Events older than this will be rejected
-  rejectEventsOlderThanSeconds: 94608000
-
-  # Ephemeral events older than this will be rejected
-  rejectEphemeralEventsOlderThanSeconds: 60
-
-  # Ephemeral events will be deleted from the DB when older than this
-  ephemeralEventsLifetimeSeconds: 300
-
-  # Maximum number of tags allowed
-  maxNumTags: 2000
-
-  # Maximum size for tag values, in bytes
-  maxTagValSize: 1024
+    # Maximum records that sync will process before returning an error
+    maxSyncEvents: 1000000

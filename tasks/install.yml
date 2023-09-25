@@ -5,6 +5,7 @@
     dest: "{{ strfry_binary_path }}"
     mode: 0755
     remote_src: true
+  notify: restart strfry
 
 - name: Setup strfry service unit
   ansible.builtin.template:
@@ -34,7 +35,7 @@
     dest: "{{ strfry_relay.writePolicy.plugin }}"
     owner: "{{ strfry_system_user }}"
     group: "{{ strfry_system_group }}"
-#   force: false # Never overwrite, this is just a starter policy
+    force: false # Never overwrite, this is just a starter policy
     mode: '0755'
   when: strfry_policies_enabled
   notify: restart strfry

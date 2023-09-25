@@ -16,19 +16,28 @@
   ansible.builtin.command:
     cmd: git submodule update --init
     chdir: "{{ ansible_env.HOME }}/src/strfry"
-# when: git_repository.changed
+  when: git_repository.changed
   changed_when: git_repository.changed
 
 - name: Run make setup-golpe
   ansible.builtin.command:
     cmd: make setup-golpe
     chdir: "{{ ansible_env.HOME }}/src/strfry"
-# when: git_repository.changed
+  when: git_repository.changed
   changed_when: git_repository.changed
 
 - name: Build strfry
   ansible.builtin.command:
     cmd: "make -j{{ strfry_make_jobs|default(1) }}"
     chdir: "{{ ansible_env.HOME }}/src/strfry"
-# when: git_repository.changed
+  when: git_repository.changed
+  changed_when: git_repository.changed
+
+- name: Backup existing strfry-db
+  ansible.builtin.shell:
+    cmd: strfry export > backup.jsonl
+    chdir: "{{ strfry_binary_path }}"
+  become: yes
+  become_user: "{{ strfry_system_user }}"
+  when: git_repository.changed
   changed_when: git_repository.changed
